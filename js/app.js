@@ -2,25 +2,25 @@
 'use strict';
 
 angular.module('NarrowItDownApp', [])
-.controller('NarrowItDownController', MenuCategoriesController)
+.controller('NarrowItDownController', NarrowItDownController)
 .service('MenuCategoriesService', MenuCategoriesService)
 .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
 
 
-MenuCategoriesController.$inject = ['MenuCategoriesService'];
-function MenuCategoriesController(MenuCategoriesService) {
-  var menu = this;
+NarrowItDownController.$inject = ['MenuCategoriesService'];
+function NarrowItDownController(MenuCategoriesService) {
+  var found = this;
 
   var promise = MenuCategoriesService.getMenuCategories();
 
   promise.then(function (response) {
-    menu.categories = response.data;
+    found.categories = response.data;
   })
   .catch(function (error) {
     console.log("Something went terribly wrong.");
   });
 
-  menu.logMenuItems = function (shortName) {
+  found.logMenuItems = function (shortName) {
     var promise = MenuCategoriesService.getMenuForCategory(shortName);
 
     promise.then(function (response) {
