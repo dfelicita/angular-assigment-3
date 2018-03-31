@@ -15,6 +15,7 @@ function NarrowItDownController(MenuCategoriesService) {
 
   promise.then(function (response) {
     found.categories = response.data;
+    console.log('response',response);
   })
   .catch(function (error) {
     console.log("Something went terribly wrong.");
