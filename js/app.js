@@ -18,7 +18,7 @@ function NarrowItDownController(MenuCategoriesService) {
     obj.categories = response.data;
     obj.categories.forEach(function(res){
       var aux = obj.getMenuItems(res.shortName);
-      console.log('res',res,'aux',aux);
+      console.log('res',res.short_name,'aux',aux);
       found.concat(aux);
     });
   })
@@ -30,6 +30,7 @@ function NarrowItDownController(MenuCategoriesService) {
     var promise = MenuCategoriesService.getMenuForCategory(shortName);
 
     promise.then(function (response) {
+      console.log('response',response);
       return response;
     })
     .catch(function (error) {
