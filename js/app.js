@@ -9,23 +9,28 @@ angular.module('NarrowItDownApp', [])
 
 NarrowItDownController.$inject = ['MenuCategoriesService'];
 function NarrowItDownController(MenuCategoriesService) {
-  var found = this;
+  var obj = this;
+  var found = [];
 
   var promise = MenuCategoriesService.getMenuCategories();
 
   promise.then(function (response) {
-    found.categories = response.data;
-    console.log('response',response);
+    obj.categories = response.data;
+    obj.categories.forEach(function(res){
+      found.concat(obj.getMenuItems(res.shortName));
+    });
+    console.log('found',found);
   })
   .catch(function (error) {
     console.log("Something went terribly wrong.");
   });
 
-  found.logMenuItems = function (shortName) {
+  obj.getMenuItems = function (shortName) {
     var promise = MenuCategoriesService.getMenuForCategory(shortName);
 
     promise.then(function (response) {
       console.log(response.data);
+      return response.data;
     })
     .catch(function (error) {
       console.log(error);
