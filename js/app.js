@@ -11,32 +11,18 @@ NarrowItDownController.$inject = ['MenuCategoriesService'];
 function NarrowItDownController(MenuCategoriesService) {
   var obj = this;
   var found = [];
-
-  var promise = MenuCategoriesService.getMenuCategories();
-
+  obj.itmes = [];
+  
+  var promise = MenuCategoriesService.getMenuForCategory();
   promise.then(function (response) {
-    obj.categories = response.data;
-    obj.categories.forEach(function(res){
-      var aux = obj.getMenuItems(res.shortName);
-      console.log('res',res.short_name,'aux',aux);
-      found.concat(aux);
-    });
+    obj.items = response.data.menu_items;
+    console.log('items',obj.items);
   })
   .catch(function (error) {
     console.log("Something went terribly wrong.");
   });
 
-  obj.getMenuItems = function (shortName) {
-    var promise = MenuCategoriesService.getMenuForCategory(shortName);
-
-    promise.then(function (response) {
-      console.log('response',response);
-      return response;
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-  };
+  
 
 }
 
@@ -54,14 +40,10 @@ function MenuCategoriesService($http, ApiBasePath) {
     return response;
   };
 
-
-  service.getMenuForCategory = function (shortName) {
+  service.getMenuForCategory = function () {
     var response = $http({
       method: "GET",
-      url: (ApiBasePath + "/menu_items.json"),
-      params: {
-        category: shortName
-      }
+      url: (ApiBasePath + "/menu_items.json")
     });
 
     return response;
